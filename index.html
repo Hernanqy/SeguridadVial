@@ -19,6 +19,10 @@
       --dark: #3f3f3f;
     }
 
+    html {
+      scroll-behavior: smooth; /* scroll suave */
+    }
+
     body {
       background: var(--bg-main);
       color: var(--dark);
@@ -40,7 +44,6 @@
       font-weight: 600;
     }
 
-    /* ---- CARDS ---- */
     .card.custom-card {
       background: var(--card-bg);
       border-radius: 18px;
@@ -51,11 +54,11 @@
       align-items: center;
       border: none;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.25s;
     }
 
     .card.custom-card:hover {
-      transform: scale(1.06);
+      transform: scale(1.06) translateY(-3px);
       box-shadow: 0 5px 12px rgba(0,0,0,0.2);
     }
 
@@ -79,6 +82,15 @@
       padding: 40px;
       border-radius: 18px;
       margin-top: 50px;
+
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .section-box.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .section-img {
@@ -103,9 +115,9 @@
 
   <div class="title-city">OLAVARRÍA</div>
 
-  <!-- HERO ORIGINAL -->
+  <!-- HERO -->
   <div class="hero d-flex justify-content-center align-items-center flex-wrap gap-3 mb-4">
-    <div class="warning-sign">
+    <div class="warning-sign" style="width:90px;height:80px;">
       <svg viewBox="0 0 100 90">
         <polygon points="50,5 95,85 5,85" fill="#f4b400"/>
         <rect x="47" y="28" width="6" height="32" fill="#3f3f3f"/>
@@ -115,18 +127,17 @@
 
     <div class="hero-text">
       <div class="hero-text-main fs-1 fw-bold">
-        <span class="seg-1" style="color:#e53935">SEG</span>
-        <span class="seg-2" style="color:#f4b400">URI</span>
-        <span class="seg-3" style="color:#e53935">DAD</span><br>
-        <span class="vial" style="color:#e53935">VIAL</span>
+        <span style="color:#e53935">SEG</span>
+        <span style="color:#f4b400">URI</span>
+        <span style="color:#e53935">DAD</span><br>
+        <span style="color:#e53935">VIAL</span>
       </div>
     </div>
   </div>
 
-  <!-- ---- CARDS COMO BOTONES ---- -->
+  <!-- CARDS / BOTONES -->
   <div class="cards row justify-content-center g-4">
 
-    <!-- BOTÓN PEATÓN -->
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#peaton" class="text-decoration-none">
         <div class="card custom-card">
@@ -135,7 +146,6 @@
       </a>
     </div>
 
-    <!-- BOTÓN MOTO -->
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#moto" class="text-decoration-none">
         <div class="card custom-card">
@@ -144,7 +154,6 @@
       </a>
     </div>
 
-    <!-- BOTÓN AUTO -->
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#auto" class="text-decoration-none">
         <div class="card custom-card">
@@ -158,15 +167,15 @@
   <div class="category-text">elegí tu categoría</div>
 
 
-  <!-- ========================================================= -->
-  <!-- ====================== SECCIÓN PEATÓN ===================== -->
-  <!-- ========================================================= -->
+  <!-- SECCIÓN PEATÓN -->
   <div id="peaton" class="section-box">
     <h2 class="mb-3">Seguridad del Peatón</h2>
 
     <div class="section-img">
       <span>Espacio para imagen del peatón</span>
-      <!-- Reemplazar por: <img src="tu_imagen.jpg" class="img-fluid"> -->
+      <!-- Ejemplo real:
+      <img src="peaton_info.jpg" class="img-fluid rounded-4" alt="Peatón seguro">
+      -->
     </div>
 
     <p>
@@ -176,10 +185,7 @@
     </p>
   </div>
 
-
-  <!-- ========================================================= -->
-  <!-- ======================== SECCIÓN MOTO ===================== -->
-  <!-- ========================================================= -->
+  <!-- SECCIÓN MOTO -->
   <div id="moto" class="section-box">
     <h2 class="mb-3">Seguridad en Moto</h2>
 
@@ -194,10 +200,7 @@
     </p>
   </div>
 
-
-  <!-- ========================================================= -->
-  <!-- ======================== SECCIÓN AUTO ===================== -->
-  <!-- ========================================================= -->
+  <!-- SECCIÓN AUTO -->
   <div id="auto" class="section-box">
     <h2 class="mb-3">Seguridad del Automóvil</h2>
 
@@ -216,6 +219,26 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Animación al hacer scroll (IntersectionObserver) -->
+<script>
+  const sections = document.querySelectorAll('.section-box');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    },
+    {
+      threshold: 0.2
+    }
+  );
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
 
 </body>
 </html>
