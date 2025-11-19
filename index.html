@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,8 +15,9 @@
     :root {
       --bg-main: #f7f3e8;
       --card-bg: #e3e0d7;
-      --red: #e53935;
-      --yellow: #f4b400;
+      --red: #e53935;     /* Peatón */
+      --yellow: #f4b400;  /* Moto */
+      --green: #4caf50;   /* Auto */
       --dark: #3f3f3f;
     }
 
@@ -62,11 +64,25 @@
       box-shadow: 0 5px 12px rgba(0,0,0,0.2);
     }
 
-    /* Estado activo al hacer clic */
+    /* Estado activo base (solo transform, el color lo manejan las variantes) */
     .card.custom-card.active {
+      transform: scale(1.06) translateY(-3px);
+    }
+
+    /* Colores por tipo de card activa */
+    .card.custom-card.active[data-type="peaton"] {
+      background: var(--red);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .card.custom-card.active[data-type="moto"] {
       background: var(--yellow);
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-      transform: scale(1.06) translateY(-3px);
+    }
+
+    .card.custom-card.active[data-type="auto"] {
+      background: var(--green);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
     }
 
     .card.custom-card img {
@@ -92,12 +108,38 @@
 
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition:
+        opacity 0.6s ease,
+        transform 0.6s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+      position: relative;
     }
 
     .section-box.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Estado activo base de sección */
+    .section-box.active-section {
+      transform: translateY(0) scale(1.01);
+    }
+
+    /* Colores por tipo de sección activa */
+    .section-box.active-section[data-type="peaton"] {
+      box-shadow: 0 0 0 3px var(--red), 0 12px 26px rgba(0, 0, 0, 0.25);
+      background-color: #f8dede;
+    }
+
+    .section-box.active-section[data-type="moto"] {
+      box-shadow: 0 0 0 3px var(--yellow), 0 12px 26px rgba(0, 0, 0, 0.25);
+      background-color: #faf2cf;
+    }
+
+    .section-box.active-section[data-type="auto"] {
+      box-shadow: 0 0 0 3px var(--green), 0 12px 26px rgba(0, 0, 0, 0.25);
+      background-color: #d9f0de;
     }
 
     .section-img {
@@ -148,9 +190,9 @@
     <div class="hero-text">
       <div class="hero-text-main fs-1 fw-bold">
         <span style="color:#e53935">SEG</span>
-        <span style="color:#f4b400">URI</span>
-        <span style="color:#e53935">DAD</span><br>
-        <span style="color:#e53935">VIAL</span>
+        <span style="color:#bebc2e">URI</span>
+        <span style="color:#24bf1e">DAD</span>
+        <span style="color:#120202">VIAL</span>
       </div>
     </div>
   </div>
@@ -160,7 +202,7 @@
 
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#peaton" class="text-decoration-none card-link">
-        <div class="card custom-card">
+        <div class="card custom-card" data-type="peaton">
           <img src="./img/peaton2_converted.png" alt="Peatón">
         </div>
       </a>
@@ -168,7 +210,7 @@
 
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#moto" class="text-decoration-none card-link">
-        <div class="card custom-card">
+        <div class="card custom-card" data-type="moto">
           <img src="./img/moto_transparent.png" alt="Moto">
         </div>
       </a>
@@ -176,7 +218,7 @@
 
     <div class="col-6 col-md-4 d-flex justify-content-center">
       <a href="#auto" class="text-decoration-none card-link">
-        <div class="card custom-card">
+        <div class="card custom-card" data-type="auto">
           <img src="./img/auto_transparent.png" alt="Auto">
         </div>
       </a>
@@ -188,7 +230,7 @@
 
 
   <!-- SECCIÓN PEATÓN -->
-  <div id="peaton" class="section-box">
+  <div id="peaton" class="section-box" data-type="peaton">
     <div class="row align-items-center g-4">
       <div class="col-md-6">
         <div class="section-img">
@@ -209,7 +251,7 @@
   </div>
 
   <!-- SECCIÓN MOTO -->
-  <div id="moto" class="section-box">
+  <div id="moto" class="section-box" data-type="moto">
     <div class="row align-items-center g-4">
       <div class="col-md-6">
         <div class="section-img">
@@ -230,7 +272,7 @@
   </div>
 
   <!-- SECCIÓN AUTO -->
-  <div id="auto" class="section-box">
+  <div id="auto" class="section-box" data-type="auto">
     <div class="row align-items-center g-4">
       <div class="col-md-6">
         <div class="section-img">
@@ -255,7 +297,7 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- JS: animación al hacer scroll + efecto activo en cards -->
+<!-- JS: animación al hacer scroll + efecto activo en cards y secciones -->
 <script>
   // Animación de aparición de secciones
   const sections = document.querySelectorAll('.section-box');
@@ -275,7 +317,7 @@
 
   sections.forEach(sec => observer.observe(sec));
 
-  // Efecto de selección en los botones/cards
+  // Efecto de selección en los botones/cards y secciones
   const cardLinks = document.querySelectorAll('.card-link');
 
   cardLinks.forEach(link => {
@@ -289,6 +331,14 @@
       // Agregar estado activo a la card clickeada
       const currentCard = this.querySelector('.custom-card');
       currentCard.classList.add('active');
+
+      // Activar la sección correspondiente
+      const targetId = this.getAttribute('href').substring(1); // quita el "#"
+      sections.forEach(sec => sec.classList.remove('active-section'));
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.classList.add('active-section');
+      }
     });
   });
 </script>
